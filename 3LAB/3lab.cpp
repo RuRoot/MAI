@@ -11,7 +11,7 @@ class Figure{
 		double* getGeometry(){
 			return geometry; 
 		}
-		Figure* getHeirs{
+		Figure* getHeirs(){
 			return heirs; 
 		}
 		void setHeirs(Figure* data){
@@ -24,7 +24,7 @@ class Figure{
 			delete geometry;
 			delete heirs;
 		}
-		virtual double square(){}
+		virtual double square() = 0;
 		
 };
 
@@ -71,7 +71,8 @@ int main(){
 	double allowedX = (double)rand() * (9,5 * R - 0,5 * R) / (RAND_MAX + 0,5 * R); 
 	for(int  i = 0; i < 28; i++){
 		if(rand() < 5){
-			double* data  {new double[] {allowedX,allowedY,metrics,metrics}};
+			//double* data  {new double[] {allowedX,allowedY,metrics,metrics}};
+			double* data = new double[] {1,1,1,1};
 			//Circle circle = Circle(data);
 			new Circle(data);
 		}
