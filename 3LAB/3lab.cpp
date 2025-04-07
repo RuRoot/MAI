@@ -5,30 +5,39 @@ using namespace std;
 #define _USE_MATH_DEFINES
 class Figure{
 	private:
-		static Figure* heirs;
-		double* geometry;
+		static inline Figure** heirs;
+		double* geometry = nullptr;
+		static inline int sizeHeirs;
 	public:
 		double* getGeometry(){
 			return geometry; 
 		}
-		Figure* getHeirs(){
-			return heirs; 
+		static Figure* getHeirs(){
+			return *heirs; 
 		}
-		void setHeirs(Figure* data){
+		void setHeirs(Figure** data){
 			heirs = data;
 		}
 		void setGeometry(double* data){
 			geometry = data;
 		}
+		static void addElToHeirs(Figure* el){
+			 sizeHeirs++;
+			 heirs = (Figure**) realloc (heirs, sizeHeirs * sizeof(Figure));
+			 heirs[sizeHeirs - 1] = el;
+		}
 		void freeMemory(){
-			delete geometry;
-			delete heirs;
+			delete [] geometry;
+			delete [] heirs;
+			geometry = nullptr;
+			heirs = nullptr;
+			
 		}
 		virtual double square() = 0;
 		
 };
 
-class Circle : Figure{
+class Circle : public Figure{
 	public:
 		double square(){
 			double radius = getGeometry()[2];
@@ -37,13 +46,15 @@ class Circle : Figure{
 		}
 		Circle(double* data){
 			setGeometry(data);
+			cout << "создан объект круг" << endl;
+			
 		}
 		~Circle(){
 			freeMemory();
 		}
 
 };
-class Rectangle : Figure{
+class Rectangle : public Figure{
 	public:
 		double square(){
 			double height = getGeometry()[2];
@@ -54,6 +65,8 @@ class Rectangle : Figure{
 		Rectangle(double* data){
 			//geometry = new double [sizeof(data)];
 			setGeometry(data);
+			cout << "создан объект прямоугольник" << endl;
+			
 		}
 		~Rectangle(){
 			freeMemory();
@@ -69,19 +82,37 @@ int main(){
 	double metrics = (double)rand() * (0,5 * R - 0,1 * R) / (RAND_MAX + 0,1 * R); // radius or side of square between 0.1 R and 0.5 R
 	double allowedY = (double)rand() * (9,5 * R - 0,5 * R) / (RAND_MAX + 0,5 * R); 
 	double allowedX = (double)rand() * (9,5 * R - 0,5 * R) / (RAND_MAX + 0,5 * R); 
-	for(int  i = 0; i < 28; i++){
-		if(rand() < 5){
+	for(int  i = 0; i < 3; i++){
+		if( (rand()%10) < 5){
 			//double* data  {new double[] {allowedX,allowedY,metrics,metrics}};
-			double* data = new double[] {1,1,1,1};
+			double* data  {new double[] {allowedX,allowedY,metrics}};
 			//Circle circle = Circle(data);
-			new Circle(data);
+			Circle* circle = new Circle(data);
+			double* test = circle->getGeometry();
+			for(int i = 0; i < sizeof(test)/sizeof(test[0]); i++){
+				cout << test[i] <<" ";
+			}
+			cout << endl <<  "конец вывода" << endl;
+			Figure::addElToHeirs(circle);
 		}
 		else{
 			double* data  {new double[] {allowedX,allowedY,metrics,metrics}};
 			//Rectangle rectangle =  Rectangle(data);
-			new Rectangle(data);
-		}		
+			//new Rectangle(data);
+			Rectangle* rectangle = new Rectangle(data);
+			double* test = rectangle->getGeometry();
+			for(int i = 0; i < sizeof(test)/sizeof(test[0]); i++){
+				cout << test[i] <<" ";
+			}
+			cout << endl <<  "конец вывода" << endl;
+			Figure::addElToHeirs(rectangle);
+		}
 	}
+	
+	for(int  i = 0; i < 28; i++){
+		cout << Figure:: getHeirs()[i].getGeometry()[0];
+	}
+	
 	return 0;
 }
 
