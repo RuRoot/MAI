@@ -5,10 +5,17 @@ using namespace std;
 #define _USE_MATH_DEFINES
 class Figure{
 	private:
+		int sizeOfGeometry;
 		static inline Figure** heirs;
 		double* geometry = nullptr;
 		static inline int sizeHeirs;
 	public:
+		int getSizeOfGeometry(){
+			return sizeOfGeometry;
+		}
+		void setSizeOfGeometry(int size){
+			sizeOfGeometry = size;
+		}
 		double* getGeometry(){
 			return geometry; 
 		}
@@ -42,12 +49,14 @@ class Figure{
 
 class Circle : public Figure{
 	public:
+		//static int sizeOfGeometry = 3;
 		double square(){
 			double radius = getGeometry()[2];
 			double square = M_PI * (radius * radius);
 			return square;
 		}
 		Circle(double* data){
+			setSizeOfGeometry(3);
 			setGeometry(data);
 			cout << "+circle" << endl;
 			
@@ -59,6 +68,7 @@ class Circle : public Figure{
 };
 class Rectangle : public Figure{
 	public:
+		//static int sizeOfGeometry = 4;
 		double square(){
 			double height = getGeometry()[2];
 			double width = getGeometry()[3];
@@ -66,6 +76,7 @@ class Rectangle : public Figure{
 			return square;
 		}
 		Rectangle(double* data){
+			setSizeOfGeometry(4);
 			setGeometry(data);
 			cout << "+rectangle" << endl;
 			
@@ -76,9 +87,11 @@ class Rectangle : public Figure{
 };
 //How about make the type of figure how field of Figure class? How aboute once calculate input->getGeometry() ?
 ostream& operator << (std::ostream &os, Figure* input){
-	int lenghtGeometry = sizeof( input->getGeometry() ) / sizeof( input->getGeometry()[0] );
+	int size =  input->getSizeOfGeometry();
+	
+	/*cout << "info lenghtGeometry " << lenghtGeometry << " = " << input->getGeometry()  << " / " << input->getGeometry()[0] << endl;*/
 	string output = "";
-	if (lenghtGeometry == 3){
+	if (size == 3){
 		output = output + "объект circle ";
 		output = output + "центр по х " + to_string(input->getGeometry()[0]) + " ";
 		output = output + "центр по y " + to_string(input->getGeometry()[1]) + " ";
@@ -149,11 +162,11 @@ void task1(){
 }
 
 int main(){
-	//task1();
-	double* data1  {new double[] {12,123,11,11}};
+	task1();
+	/*double* data1  {new double[] {12,123,11,11}};
 	double* data2  {new double[] {10,9,5}}; 
-	Circle* circle = new Circle(data2);
-	Rectangle* rectangle = new Rectangle(data1);
+	Circle* circle = new Circle(data2,3);
+	Rectangle* rectangle = new Rectangle(data1,4);
 	Figure::addElToHeirs(circle);
 	Figure::addElToHeirs(rectangle);
 	//cout << (*rectangle) + (*circle) ;
@@ -167,7 +180,7 @@ int main(){
 	}
 	cout << "--------------------end-----------------------------------"<<endl;
 	cout << "конец" << endl;
-	return 0;
+	return 0;*/
 }
 
 
