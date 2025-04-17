@@ -30,10 +30,11 @@ class Figure{
 			 heirs[sizeHeirs - 1] = el;
 		}
 		void freeMemory(){
-			delete [] geometry;
-			delete [] heirs;
-			geometry = nullptr;
-			heirs = nullptr;
+		 	sizeHeirs--;
+			//delete [] geometry;
+			//delete [] heirs;
+			//geometry = nullptr;
+			//heirs = nullptr;
 			
 		}
 		virtual double square() = 0;
@@ -94,17 +95,23 @@ ostream& operator << (std::ostream &os, Figure* input){
 }
 template <typename T,typename P>  Figure* operator +(T figure1,P figure2){
 			if(figure1.square() > figure2.square()){
-				T* figure3 = new T(figure1.getGeometry());	
+				T* figure3 = new T(figure1.getGeometry());
+				Figure::addElToHeirs(figure3);
+				
 			}
 			else{
 				P* figure3 = new P(figure2.getGeometry());
+				Figure::addElToHeirs(figure3);
 			}
+			cout << "--------------------in function --------------------------"<< endl;
 			for(int  i = 0; i < Figure:: getSizeHeirs(); i++){
 				cout << Figure:: getHeirs()[i] << endl;
 			}//check
+			cout << "--------------------end-----------------------------------"<<endl;
 			int lastAdd = (Figure:: getSizeHeirs()) - 1;
 			cout << Figure:: getHeirs()[lastAdd] << endl;
-			return Figure:: getHeirs()[lastAdd];
+			Figure* output = Figure:: getHeirs()[lastAdd];
+			return output;
 			
 }
 
@@ -147,12 +154,18 @@ int main(){
 	double* data2  {new double[] {10,9,5}}; 
 	Circle* circle = new Circle(data2);
 	Rectangle* rectangle = new Rectangle(data1);
+	Figure::addElToHeirs(circle);
+	Figure::addElToHeirs(rectangle);
 	//cout << (*rectangle) + (*circle) ;
+	cout << "______" << Figure:: getSizeHeirs() << endl;;
 	*rectangle + *circle;
 	cout << "старт" << endl;
+	cout << Figure:: getSizeHeirs() << endl;
+	cout << "--------------------in main --------------------------"<< endl;
 	for(int  i = 0; i < Figure:: getSizeHeirs(); i++){
 		cout << Figure:: getHeirs()[i] << endl;
 	}
+	cout << "--------------------end-----------------------------------"<<endl;
 	cout << "конец" << endl;
 	return 0;
 }
