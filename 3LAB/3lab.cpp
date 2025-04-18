@@ -103,6 +103,27 @@ ostream& operator << (std::ostream &os, Figure* input){
 	}
 	return os << output;
 }
+istream& operator >> (std::istream& in, Figure* figure){
+    double* geometry;
+    double firstValue;
+    double secondValue;
+    double thirdValue;
+    int size = figure -> getSizeOfGeometry();
+    if (size == 4){ 
+    	double fourthValue;
+    	in >> firstValue >> secondValue >> thirdValue >> fourthValue;
+    	double* data =  {new double[] {firstValue,secondValue,thirdValue,fourthValue}};
+    	figure -> setGeometry(data);
+    	return in;
+    }
+    
+    else{
+    	in >> firstValue >> secondValue >> thirdValue;
+    	double* data =  {new double[] {firstValue,secondValue,thirdValue}};
+    	figure -> setGeometry(data);
+    	return in;
+    }
+}
 template <typename T,typename P>  Figure* operator + (T figure1,P figure2){
 			if(figure1.square() > figure2.square()){
 				T* figure3 = new T(figure1.getGeometry());
