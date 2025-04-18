@@ -2,7 +2,9 @@ using namespace std;
 #include <iostream>
 #include <cmath>
 #include <ctime>
+#include <typeinfo>
 #define _USE_MATH_DEFINES
+
 class Figure{
 	private:
 		int sizeOfGeometry;
@@ -51,11 +53,13 @@ class Circle : public Figure{
 			return square;
 		}
 		Circle(double* data){
+			cout << "добавлен обьект circle" << endl; 
 			setSizeOfGeometry(3);
 			setGeometry(data);
 			
 		}
 		~Circle(){
+			cout << "удален обьект circle" << endl; 
 			freeMemory();
 		}
 
@@ -70,11 +74,13 @@ class Rectangle : public Figure{
 			return square;
 		}
 		Rectangle(double* data){
+			cout << "добавлен обьект recctangle" << endl;
 			setSizeOfGeometry(4);
 			setGeometry(data);
 			
 		}
 		~Rectangle(){
+			cout << "удален обьект rectangle" << endl; 
 			freeMemory();
 		}
 };
@@ -97,7 +103,7 @@ ostream& operator << (std::ostream &os, Figure* input){
 	}
 	return os << output;
 }
-template <typename T,typename P>  Figure* operator +(T figure1,P figure2){
+template <typename T,typename P>  Figure* operator + (T figure1,P figure2){
 			if(figure1.square() > figure2.square()){
 				T* figure3 = new T(figure1.getGeometry());
 				Figure::addElToHeirs(figure3);
@@ -112,6 +118,31 @@ template <typename T,typename P>  Figure* operator +(T figure1,P figure2){
 			return output;
 			
 }
+template <typename T> Figure* operator * (int number,T figure){
+				double* data = figure.getGeometry();
+				int size = figure.getSizeOfGeometry();
+				for(int  i = 0; i < size; i++){
+					data[i] = data[i] * number;
+				}
+				//figure.setGeometry(data);
+				//T answer = figure;
+				Figure* output = new T(data);
+				return output;
+			
+}
+template <typename T> Figure* operator * (T figure,int number){
+				double* data = figure.getGeometry();
+				int size = figure.getSizeOfGeometry();
+				for(int  i = 0; i < size; i++){
+					data[i] = data[i] * number;
+				}
+				//figure.setGeometry(data);
+				//T answer = figure;
+				Figure* output = new T(data);
+				return output;
+			
+}
+
 
 void task1(){
 	srand(time(0));
@@ -160,9 +191,18 @@ void task2(){
 	}
 }
 
+void task3(){
+	double* data1  {new double[] {12,123,11,11}};
+	Rectangle* rectangle = new Rectangle(data1);
+	auto p = 2 * *rectangle;
+	cout << p << endl;
+}
+
+
 int main(){
 	//task1();
-	task2();
+	//task2();
+	task3();
 	return 0;
 }
 
