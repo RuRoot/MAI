@@ -3,6 +3,7 @@ using namespace std;
 #include <cmath>
 #include <ctime>
 #include <typeinfo>
+#include <fstream>
 #define _USE_MATH_DEFINES
 
 #ifndef lab3_h

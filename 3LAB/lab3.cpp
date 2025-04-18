@@ -150,9 +150,9 @@ void task1(){
 	cin >> R;
 	for(int  i = 0; i < 3; i++){
 		// watch random generate of random values between a and b
-		double metrics = (double)rand() * (0,5 * R - 0,1 * R) / (RAND_MAX + 0,1 * R); // radius or side of square between 0.1 R and 0.5 R
-		double allowedY = (double)rand() * (9,5 * R - 0,5 * R) / (RAND_MAX + 0,5 * R); 
-		double allowedX = (double)rand() * (9,5 * R - 0,5 * R) / (RAND_MAX + 0,5 * R); 
+		double metrics = (double)rand() * (0.5 * R - 0.1 * R) / (RAND_MAX + 0.1 * R); // radius or side of square between 0.1 R and 0.5 R
+		double allowedY = (double)rand() * (9.5 * R - 0.5 * R) / (RAND_MAX + 0.5 * R); 
+		double allowedX = (double)rand() * (9.5 * R - 0.5 * R) / (RAND_MAX + 0.5 * R); 
 		if( (rand()%10) < 5){
 			double* data  {new double[] {allowedX,allowedY,metrics}};
 			Circle* circle = new Circle(data);
@@ -166,13 +166,17 @@ void task1(){
 			
 		}
 	}
-	
+	//may to be function
 	cout << Figure:: getSizeHeirs()<<  endl;
+	ofstream out;       
+    	out.open("output.txt");      
+    	
 	//may to be function
 	for(int  i = 0; i < Figure:: getSizeHeirs(); i++){
 		cout << Figure:: getHeirs()[i] << endl;
+		out << Figure:: getHeirs()[i] << endl;
 	}
-
+	out.close(); 
 
 }
 
