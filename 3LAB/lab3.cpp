@@ -1,89 +1,67 @@
-using namespace std;
-#include <iostream>
-#include <cmath>
-#include <ctime>
-#include <typeinfo>
-#define _USE_MATH_DEFINES
+#include "lab3.h"
+int Figure :: getSizeOfGeometry(){
+	return sizeOfGeometry;
+}
+void Figure :: setSizeOfGeometry(int size){
+	sizeOfGeometry = size;
+}
+double*  Figure :: getGeometry(){
+	return geometry; 
+}
+Figure** Figure :: getHeirs(){
+	return heirs; 
+}
+void Figure :: setHeirs(Figure** data){
+	heirs = data;
+}
+int Figure :: getSizeHeirs(){
+	return sizeHeirs;
+}
+void Figure :: setGeometry(double* data){
+	geometry = data;
+}
+void Figure :: addElToHeirs(Figure* el){
+	sizeHeirs++;
+	heirs = (Figure**) realloc (heirs, sizeHeirs * sizeof(Figure*));
+	heirs[sizeHeirs - 1] = el;
+}
+void Figure :: freeMemory(){
+	sizeHeirs--;
+}
 
-class Figure{
-	private:
-		int sizeOfGeometry;
-		static inline Figure** heirs;
-		double* geometry = nullptr;
-		static inline int sizeHeirs;
-	public:
-		int getSizeOfGeometry(){
-			return sizeOfGeometry;
-		}
-		void setSizeOfGeometry(int size){
-			sizeOfGeometry = size;
-		}
-		double* getGeometry(){
-			return geometry; 
-		}
-		static Figure** getHeirs(){
-			return heirs; 
-		}
-		void setHeirs(Figure** data){
-			heirs = data;
-		}
-		static int getSizeHeirs(){
-			return sizeHeirs;
-		}
-		void setGeometry(double* data){
-			geometry = data;
-		}
-		static void addElToHeirs(Figure* el){
-			 sizeHeirs++;
-			 heirs = (Figure**) realloc (heirs, sizeHeirs * sizeof(Figure*));
-			 heirs[sizeHeirs - 1] = el;
-		}
-		void freeMemory(){
-		 	sizeHeirs--;
-			
-		}
-		virtual double square() = 0;
-};
 
-class Circle : public Figure{
-	public:
-		double square(){
-			double radius = getGeometry()[2];
-			double square = M_PI * (radius * radius);
-			return square;
-		}
-		Circle(double* data){
-			cout << "добавлен обьект circle" << endl; 
-			setSizeOfGeometry(3);
-			setGeometry(data);
+double Circle:: square(){
+	double radius = getGeometry()[2];
+	double square = M_PI * (radius * radius);
+	return square;
+}
+Circle::Circle(double* data){
+	cout << "добавлен обьект circle" << endl; 
+	setSizeOfGeometry(3);
+	setGeometry(data);
 			
-		}
-		~Circle(){
-			cout << "удален обьект circle" << endl; 
-			freeMemory();
-		}
+}
+Circle::~Circle(){
+	cout << "удален обьект circle" << endl; 
+	freeMemory();
+}
+		
+double Rectangle :: square(){
+	double height = getGeometry()[2];
+	double width = getGeometry()[3];
+	double square = height * width;
+	return square;
+}
+Rectangle :: Rectangle(double* data){
+	cout << "добавлен обьект recctangle" << endl;
+	setSizeOfGeometry(4);
+	setGeometry(data);
+}
+Rectangle :: ~Rectangle(){
+	cout << "удален обьект rectangle" << endl; 
+	freeMemory();
+}
 
-};
-class Rectangle : public Figure{
-	public:
-		//static int sizeOfGeometry = 4;
-		double square(){
-			double height = getGeometry()[2];
-			double width = getGeometry()[3];
-			double square = height * width;
-			return square;
-		}
-		Rectangle(double* data){
-			cout << "добавлен обьект recctangle" << endl;
-			setSizeOfGeometry(4);
-			setGeometry(data);
-			
-		}
-		~Rectangle(){
-			cout << "удален обьект rectangle" << endl; 
-			freeMemory();
-		}
-};
 //How about make the type of figure how field of Figure class? How aboute once calculate input->getGeometry() ?
 ostream& operator << (std::ostream &os, Figure* input){
 	int size =  input->getSizeOfGeometry();
@@ -219,13 +197,6 @@ void task3(){
 	cout << p << endl;
 }
 
-
-int main(){
-	//task1();
-	//task2();
-	task3();
-	return 0;
-}
 
 
 
